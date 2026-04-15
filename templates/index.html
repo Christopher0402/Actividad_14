@@ -2,70 +2,43 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Multi-Nivel Actividad 14</title>
+    <title>Calculadora Actividad 14</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 500px; text-align: center; }
-        .logo { width: 180px; margin-bottom: 20px; }
-        h1 { color: #004a99; font-size: 24px; }
-        input, select { padding: 10px; margin: 10px 5px; border: 1px solid #ddd; border-radius: 5px; width: 80%; }
-        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        button { padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; color: white; }
-        .btn-arith { background-color: #28a745; }
-        .btn-bin { background-color: #17a2b8; }
-        .btn-logic { background-color: #fd7e14; }
-        .btn-extra { background-color: #6f42c1; grid-column: span 2; }
-        button:hover { opacity: 0.8; transform: scale(1.02); }
-        .result-box { margin-top: 25px; padding: 15px; background: #e9ecef; border-left: 5px solid #004a99; border-radius: 5px; }
-        .footer { margin-top: 20px; font-size: 12px; color: #777; }
+        body { font-family: sans-serif; text-align: center; background: #f0f2f5; padding: 50px; }
+        .box { background: white; padding: 30px; border-radius: 10px; display: inline-block; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        /* Estilos para tu logo personalizado */
+        .logo { width: 200px; max-height: 100px; object-fit: contain; margin-bottom: 20px; }
+        input, select { margin: 10px; padding: 8px; border-radius: 5px; border: 1px solid #ccc; }
+        button { padding: 10px 20px; cursor: pointer; border-radius: 5px; border: none; color: white; font-weight: bold; }
+        .btn-green { background: #28a745; }
+        .btn-blue { background: #007bff; }
+        .btn-orange { background: #fd7e14; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <img src="https://tecmilenio.mx/themes/custom/tecmilenio/logo.svg" alt="TecMilenio Logo" class="logo">
+    <div class="box">
+        <img src="{{ url_for('static', filename='logotecmi.jpeg') }}" alt="Mi Logo" class="logo">
         
-        <h1>Calculadora Avanzada</h1>
+        <h2>Calculadora de Christopher</h2>
 
         <form method="POST">
-            <input type="text" name="val1" placeholder="Valor A (Ej: 10, 1010, True)" required>
-            
+            <input type="text" name="val1" placeholder="Valor A" required>
             <select name="op">
-                <optgroup label="Aritmética/Binaria">
-                    <option value="+">Suma (+)</option>
-                    <option value="-">Resta (-)</option>
-                    <option value="*">Multiplicación (*)</option>
-                    <option value="/">División (/)</option>
-                </optgroup>
-                <optgroup label="Lógica (Punto 8)">
-                    <option value="AND">Lógica AND</option>
-                    <option value="OR">Lógica OR</option>
-                </optgroup>
+                <option value="+">+</option><option value="-">-</option>
+                <option value="*">*</option><option value="/">/</option>
+                <option value="AND">AND</option><option value="OR">OR</option>
             </select>
-
-            <input type="text" name="val2" placeholder="Valor B (Ej: 5, 110, False)" required>
-
-            <div class="btn-group">
-                <button type="submit" name="tipo" value="aritmetica" class="btn-arith">Aritmética</button>
-                <button type="submit" name="tipo" value="binaria" class="btn-bin">Binaria</button>
-                
-                <button type="submit" name="tipo" value="logica" class="btn-logic">Lógica</button>
-                
-                <button type="button" onclick="location.href='/'" class="btn-extra">Limpiar Pantalla</button>
-            </div>
+            <input type="text" name="val2" placeholder="Valor B" required>
+            <br>
+            <button type="submit" name="tipo" value="aritmetica" class="btn-green">Aritmética</button>
+            <button type="submit" name="tipo" value="binaria" class="btn-blue">Binaria</button>
+            <button type="submit" name="tipo" value="logica" class="btn-orange">Lógica</button>
         </form>
 
         {% if resultado is not none %}
-            <div class="result-box">
-                <strong>Resultado:</strong>
-                <h2 style="margin: 5px 0; color: #004a99;">{{ resultado }}</h2>
-            </div>
+            <h3 style="margin-top: 20px;">Resultado: {{ resultado }}</h3>
         {% endif %}
-
-        <div class="footer">
-            Actividad 14 - Christopher - Cloud Computing 2026
-        </div>
     </div>
 
 </body>
