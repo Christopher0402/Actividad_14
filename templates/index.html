@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora TecMilenio</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; }
+        .container { border: 1px solid #ccc; display: inline-block; padding: 20px; border-radius: 10px; }
+        input { margin: 5px; padding: 8px; }
+        .btn { padding: 10px 20px; cursor: pointer; background: #004a99; color: white; border: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora Dual</h1>
+        <form method="POST">
+            <input type="text" name="val1" placeholder="Número 1 (o Binario)" required>
+            <select name="op">
+                <option value="+">+</option>
+                <option value="-">-</option>
+                <option value="*">*</option>
+                <option value="/">/</option>
+            </select>
+            <input type="text" name="val2" placeholder="Número 2 (o Binario)" required>
+            <br><br>
+            <button type="submit" name="tipo" value="aritmetica" class="btn">Calcular Aritmética</button>
+            <button type="submit" name="tipo" value="binaria" class="btn">Calcular Binaria</button>
+        </form>
+
+        {% if resultado is not none %}
+            <h2>Resultado: {{ resultado }}</h2>
+        {% endif %}
+    </div>
+</body>
+</html>
