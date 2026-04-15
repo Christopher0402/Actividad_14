@@ -1,14 +1,3 @@
-from flask import Flask, render_template, request
-import datetime
-
-app = Flask(__name__)
-
-# Función para registrar cambios en el log (Punto 4 del ejercicio)
-def registrar_log(accion):
-    with open("backup.log", "a") as f:
-        fecha = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        f.write(f"[{fecha}] - {accion}\n")
-
 @app.route("/", methods=["GET", "POST"])
 def calculadora():
     resultado = None
@@ -19,23 +8,46 @@ def calculadora():
         tipo = request.form.get("tipo")
 
         try:
+            # 1. PARTE ARITMÉTICA (Punto 1)
             if tipo == "aritmetica":
-                # Evalúa operaciones como 5 + 5
-                resultado = eval(f"{val1} {operacion} {val2}")
-                registrar_log(f"Cálculo Aritmético: {val1} {operacion} {val2} = {resultado}")
-            
+                # Convertimos a float para permitir decimales
+                n1 = float(val1)
+                n2 = float(val2)
+                if operacion == "+": resultado = n1 + n2
+                elif operacion == "-": resultado = n1 - n2
+                elif operacion == "*": resultado = n1 * n2
+                elif operacion == "/": resultado = n1 / n2 if n2 != 0 else "Error: Div / 0"
+                registrar_log(f"Aritmética: {val1} {operacion} {val2} = {resultado}")
+
+            # 2. PARTE BINARIA (Punto 1)
             elif tipo == "binaria":
-                # Convierte de binario a decimal, opera y vuelve a binario
-                num1 = int(val1, 2)
-                num2 = int(val2, 2)
-                res_dec = eval(f"{num1} {operacion} {num2}")
-                resultado = bin(res_dec).replace("0b", "")
-                registrar_log(f"Cálculo Binario: {val1} {operacion} {val2} = {resultado}")
+                # Convertimos de base 2 a decimal, operamos y regresamos a binario
+                n1_bin = int(val1, 2)
+                n2_bin = int(val2, 2)
+                if operacion == "+": res_num = n1_bin + n2_bin
+                elif operacion == "-": res_num = n1_bin - n2_bin
+                elif operacion == "*": res_num = n1_bin * n2_bin
+                elif operacion == "/": res_num = n1_bin // n2_bin if n2_bin != 0 else 0
+                
+                resultado = bin(res_num).replace("0b", "")
+                registrar_log(f"Binaria: {val1} {operacion} {val2} = {resultado}")
+
+            # 3. PARTE LÓGICA (Punto 8)
+            elif tipo == "logica":
+                # Comparamos el texto ingresado para obtener Booleanos
+                # Acepta: "true", "True", "1" como Verdadero
+                b1 = val1.lower() in ['true', '1', 't']
+                b2 = val2.lower() in ['true', '1', 't']
+                
+                if operacion == "AND":
+                    resultado = b1 and b2
+                elif operacion == "OR":
+                    resultado = b1 or b2
+                
+                registrar_log(f"Lógica: {b1} {operacion} {b2} = {resultado}")
 
         except Exception as e:
-            resultado = "Error en los datos"
+            resultado = f"Error: Entrada no válida"
+            registrar_log(f"Error detectado: {str(e)}")
             
     return render_template("index.html", resultado=resultado)
-
-if __name__ == "__main__":
-    app.run(debug=True, port=5000)
